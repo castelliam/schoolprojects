@@ -1,0 +1,24 @@
+begin
+  	if 3+3 then x := 5;
+  	else z := 0;
+  	while 4+4 do y := 9;
+  	y := 4 + 45;
+  	z := 9 / 3;
+  	z := 9 - 3;
+  	z := 9 ^ 3;
+  	if 3 > 5 then x := 5;
+  	if 3 >= 5 then x := 5;
+  	if 3 <= 5 then x := 5;
+  	if 3 < 5 then x := 5;
+  	if 3 == 5 then x := 5;
+  	if 3 != 5 then x := 5;
+  	if 3+3 && 5+5 then x :=5;
+  	if 3+3 || 5+5 then x :=5;
+  	z := 9 * 3;
+  	let
+  		var y: Integer
+  	in
+  		begin
+  			y := 1 + 1
+  		end
+end

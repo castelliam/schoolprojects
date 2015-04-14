@@ -1,0 +1,31 @@
+// CUP specification for a simple expression evaluator (no actions)
+
+import java_cup.runtime.*;
+
+/* Terminals (tokens returned by the scanner). This list should match the list of tokens provided in your lexer.*/
+terminal String		BEGIN, END, IDENTIFIER;
+terminal String		SEMI, ASSIGN, PLUS; 
+terminal String     TIMES;
+terminal Integer    INTEGER;
+
+/* Non terminals */
+non terminal Program program;
+non terminal Commands commands;
+non terminal Command command;
+non terminal Expr expr;
+non terminal BinOp binOp;
+
+/* Precedences */
+precedence left PLUS;
+precedence left TIMES;
+
+/* The grammar */
+program    ::= command:c {: RESULT = new Program(c); :};
+command    ::= BEGIN commands:c END {: RESULT = new Command(c); :}
+            |  IDENTIFIER:id ASSIGN expr:e {: RESULT = new Command(id, e); :}; 
+commands   ::= command:c SEMI commands:cs {: RESULT = new Commands(c, cs); :}
+            |  command:c {: RESULT = new Commands(c); :};
+expr       ::= expr:e1 binOp:op expr:e2 {: RESULT = new Expr(e1, e2, op); :}
+			|  INTEGER:e {: RESULT = new Expr(e); :};
+binOp      ::= PLUS {: RESULT = new BinOp("+"); :}
+            |  TIMES {: RESULT = new BinOp("*"); :};

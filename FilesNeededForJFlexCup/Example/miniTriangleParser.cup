@@ -1,0 +1,31 @@
+// CUP specification for a simple expression evaluator (no actions)
+
+import java_cup.runtime.*;
+
+/* Terminals (tokens returned by the scanner). This list should match the list of tokens provided in your lexer.*/
+terminal			BEGIN, END, IDENTIFIER, IF, THEN, ELSE, WHILE, DO, LET, IN;
+terminal            SEMI, ASSIGN, PLUS; 
+terminal            TIMES;
+terminal Integer    INTEGER;
+
+/* Non terminals */
+non terminal            commands, binOp;
+non terminal Integer    program, command, expr;
+
+/* Precedences */
+precedence left PLUS;
+precedence left TIMES;
+
+/* The grammar */
+program    ::= command;
+command    ::= BEGIN commands END
+            |  IDENTIFIER ASSIGN expr
+            |  IF expr THEN command
+            |  ELSE command
+            |  WHILE expr DO command;
+commands   ::= command SEMI commands
+            |  command;
+expr       ::= expr binOp expr
+			|  INTEGER ;
+binOp      ::= PLUS 
+            |  TIMES ;

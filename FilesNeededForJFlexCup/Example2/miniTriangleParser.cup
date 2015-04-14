@@ -1,0 +1,63 @@
+// CUP specification for a simple expression evaluator (no actions)
+
+import java_cup.runtime.*;
+
+/* Terminals (tokens returned by the scanner). This list should match the list of tokens provided in your lexer.*/
+terminal			BEGIN, END, IDENTIFIER, IF, ELSE, THEN, WHILE, DO;
+terminal            SEMI, COLON, ASSIGN, PLUS, MINUS, DASH, EXC; 
+terminal            TIMES, DIVIDE, AND, OR;
+terminal 			UPCARROT;
+terminal 			LET, IN, CONST, VAR;
+terminal 			LESSTHAN, LESSEQUAL, EQUAL, NOTEQUAL, GREATEREQUAL, GREATER;
+terminal Integer    INTEGER;
+
+/* Non terminals */
+non terminal            commands, binOp, declaration, declarations;
+non terminal Integer    program, command, expr, typedenoter;
+
+/* Precedences */
+precedence right UPCARROT;
+precedence left PLUS;
+precedence left MINUS;
+precedence left AND;
+precedence left OR;
+precedence left TIMES;
+precedence left DIVIDE;
+precedence nonassoc LESSTHAN;
+precedence nonassoc LESSEQUAL;
+precedence nonassoc EQUAL;
+precedence nonassoc NOTEQUAL;
+precedence nonassoc GREATEREQUAL;
+precedence nonassoc GREATER;
+
+/* The grammar */
+program    ::= command;
+command    ::= BEGIN commands END
+            |  IDENTIFIER ASSIGN expr
+            |  IF expr THEN command
+            |  ELSE command
+            |  WHILE expr DO command
+            |  LET declarations IN command;
+commands   ::= command SEMI commands
+            |  command;
+expr       ::= expr binOp expr
+		|  INTEGER ;
+binOp      ::= PLUS 
+            |  TIMES 
+            |  DIVIDE
+            |  MINUS
+            |  LESSTHAN
+            |  LESSEQUAL
+            |  EQUAL
+            |  NOTEQUAL
+            |  GREATEREQUAL
+            |  GREATER
+            |  AND
+            |  OR
+            |  UPCARROT ;
+declarations ::= declaration
+			|  declaration SEMI declarations ;
+declaration ::= CONST IDENTIFIER COLON typedenoter EQUAL expr
+			|  VAR IDENTIFIER COLON typedenoter
+			|  VAR IDENTIFIER COLON typedenoter ASSIGN expr ;
+typedenoter ::= IDENTIFIER ;
